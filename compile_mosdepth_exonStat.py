@@ -5,6 +5,7 @@ import sys, os, glob
 region_glob = glob.glob('*.regions.bed.gz')
 threshold_glob = glob.glob('*.thresholds.bed.gz')
 summary_glob = glob.glob('*.mosdepth.summary.txt')
+cov_threshold = sys.argv[1]
 
 def read_region(region_lst, summary_lst):
     df_lst_for_avg = []
@@ -122,10 +123,22 @@ def run():
     print('starting to compile')
     writer = pd.ExcelWriter(f'PerTargetMeanCov.xlsx', engine='xlsxwriter')
     mdf, gdf, smdf = read_region(region_glob, summary_glob)
+    cols = [ c for c in mdf.columns if 'neg' not in c.lower() ]
+    no_neg_mdf = mdf[cols]
+    # df < 20 will turn any cells => 20 to NaN, and dropna.all will remove the row if it is all NaN( all > 20), previous cov threshold was set to 20
+    print(f'filtering targets below {cov_threshold}X')
+    low_cov_df = no_neg_mdf[no_neg_mdf < int(cov_threshold)].dropna(how='all')
+    low_cov_df.reset_index(inplace=True)
+    low_cov_df_target_names = low_cov_df[['target']]
+    below_cov_threshold_df = pd.merge(no_neg_mdf, low_cov_df_target_names, on='target', how='inner') 
     mdf.to_excel(writer, sheet_name = 'All_Samples' ,index = True)
+    below_cov_threshold_df.to_excel(writer, sheet_name = f'TargetsBelow_{cov_threshold}X' ,index = False)
+
     gdf.to_excel(writer, sheet_name = 'AvgAcrossSamples' ,index = False)
     smdf.to_excel(writer, sheet_name = 'SampleLevel' ,index = False)
     writer.save()
+
+
     print('done with per target coverage')
     writer = pd.ExcelWriter(f'PerTargetThresholdCov.xlsx', engine='xlsxwriter')
     tgdf, tmsdf = read_threshold(threshold_glob)
