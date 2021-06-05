@@ -1,4 +1,4 @@
-# This repo is a collection of per target coverage and threshold coverage scripts with a given list of BAM files and a target bed file
+# This repo is a collection scripts of per target coverage and threshold coverage analysis with a given list of BAM files and a target bed file
 
 1. wrapper_for_mosdepth.sh: the driver script that calls different script and manage jobs
     - run it like: `bash wrapper_for_mosdepth.sh $your_bed_file`
