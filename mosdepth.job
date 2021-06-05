@@ -1,0 +1,17 @@
+#!/bin/bash
+#$ -j y
+#$ -cwd
+#$ -e logs
+#$ -o logs
+#$ -S /bin/bash
+#$ -pe mpi 18
+#$ -q test.q
+#$ -M dlin@email
+#$ -m a
+
+hostname
+# prefix will be the samples name
+prefix=`basename ${bam}| awk 'BEGIN{FS="."}{print $1}'`
+
+# replace this with your own path to mosdepth
+/home/dlin/miniconda3/envs/mose/bin/mosdepth --by ${bed} -T 10,20,50,100,500,1000 -x ${prefix} ${bam}
