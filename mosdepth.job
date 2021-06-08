@@ -11,7 +11,8 @@
 
 hostname
 # prefix will be the samples name
-prefix=`basename ${bam}| awk 'BEGIN{FS="."}{print $1}'`
+sample_name=`basename ${bam}| awk 'BEGIN{FS="."}{print $1}'`
 
 # replace this with your own path to mosdepth
-/home/dlin/miniconda3/envs/mose/bin/mosdepth --by ${bed} -T 10,20,50,100,500,1000 -x ${prefix} ${bam}
+/home/dlin/miniconda3/envs/mose/bin/mosdepth --by ${bed} -T 10,20,50,100,500,1000 -x ${sample_name} ${bam}
+/home/dlin/miniconda3/envs/mose/bin/bedtools intersect -a ${sample_name}.per-base.bed.gz -b ${bed} | awk -F"\t" '{print $1,$2,$4}' > ${sample_name}.coverage

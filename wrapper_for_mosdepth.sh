@@ -3,19 +3,19 @@
 # set -eux
 WORK_DIR=$PWD
 
-# Change line 18 to glob the bam files correctly
+# Change line 18 to glob the bam files correctly. This 
 # Give your annotated bed files with cords like "chr1    10292381        10292497        Gene_RefSeqNum_ExonNum"
 # Run it like "bash wrapper_for_mosdepth.sh $your_bed_file"
 BED=$1
-SEQUENCING_PLATFORM=
-
+SEQUENCING_PLATFORM=Nextseq
 
 foo(){
          local run=$1
          mkdir ${run}
          cd ${run}
 
-         ls /NGS/${SEQUENCING_PLATFORM}/${run}/Panel/Project/Sample*/*.bam | grep -v NEG > mose_bam_lst
+         # Part1 run jobs to generate metrics
+         ls /NGS/${SEQUENCING_PLATFORM}/${run}/Aligned_Panel*/Project*/Sample_*/*.bam | grep -v NEG > mose_bam_lst
          for bam in `cat mose_bam_lst`
             do
                qsub -v bam=$bam -v bed=${WORK_DIR}/$BED ${WORK_DIR}/mosdepth.job
@@ -36,10 +36,16 @@ foo(){
          mv PerTargetMeanCov.xlsx ${run}_PerTargetMeanCov.xlsx
          mv PerTargetThresholdCov.xlsx ${run}_PerTargetThresholdCov.xlsx
 
+         # Plot the in-run sample correlation heatmap
          /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/corr_heatmap.py ${run}_PerTargetMeanCov.xlsx
          mv correlation_heatmap.png ${run}_correlation_heatmap.png
 
-         cp *.xlsx ${run}_correlation_heatmap.png ${WORK_DIR}
+         /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/cal_quantile_plot_per_base.py
+         mv Central95FoldDiff.xlsx ${run}_Central95FoldDiff.xlsx
+         mv Avg_PerBaseCovHist.png ${run}_Avg_PerBaseCovHist.png
+
+         cp *.xlsx ${WORK_DIR}
+         cp *.png ${WORK_DIR}
          cd ${WORK_DIR}
 }
 

@@ -137,14 +137,16 @@ def run():
     gdf.to_excel(writer, sheet_name = 'AvgAcrossSamples' ,index = False)
     smdf.to_excel(writer, sheet_name = 'SampleLevel' ,index = False)
     writer.save()
-
-
     print('done with per target coverage')
+
+
     writer = pd.ExcelWriter(f'PerTargetThresholdCov.xlsx', engine='xlsxwriter')
     tgdf, tmsdf = read_threshold(threshold_glob)
     tgdf.to_excel(writer, sheet_name = 'AvgAcrossSamples' ,index = False)
     tmsdf.to_excel(writer, sheet_name = 'SampleLevel' ,index = False)
     writer.save()
     print('done with threshold coverage')
+    
+    
 if __name__=="__main__":
     run()
