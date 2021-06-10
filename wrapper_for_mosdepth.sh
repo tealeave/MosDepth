@@ -7,15 +7,18 @@ WORK_DIR=$PWD
 # Give your annotated bed files with cords like "chr1    10292381        10292497        Gene_RefSeqNum_ExonNum"
 # Run it like "bash wrapper_for_mosdepth.sh $your_bed_file"
 BED=$1
-SEQUENCING_PLATFORM=Nextseq
+# SEQUENCING_PLATFORM=Nextseq
 
 foo(){
          local run=$1
-         mkdir ${run}
+         mkdir -p ${run}
          cd ${run}
-
+         
+         # cp this python script for mosdepth.job
+         cp ${WORK_DIR}/per_base_convert.py .
          # Part1 run jobs to generate metrics
-         ls /NGS/${SEQUENCING_PLATFORM}/${run}/Aligned_Panel*/Project*/Sample_*/*.bam | grep -v NEG > mose_bam_lst
+         # ls /NGS/${SEQUENCING_PLATFORM}/${run}/Aligned_Panel_77_SGE/Project_77_CancerV5/Sample_*/*.bam | grep -v NEG > mose_bam_lst
+         ls /NGSData/BamDeposit/77_CancerV5/${run}/*.bam| grep -v NEG > mose_bam_lst
          for bam in `cat mose_bam_lst`
             do
                qsub -v bam=$bam -v bed=${WORK_DIR}/$BED ${WORK_DIR}/mosdepth.job

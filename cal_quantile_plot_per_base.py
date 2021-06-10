@@ -27,10 +27,12 @@ def calc_95_fold_diff(lst):
     # n = 0
     for cov in lst:
         # if n > 4:
-        #     continue
+        #     break
+        if 'neg' in cov.lower():
+            continue
         sample_name = cov.split('/')[-1].split('.')[0]
         print(f'Doing {sample_name}')
-        df = pd.read_csv(cov, sep=' ', names=['chr', 'position', 'coverage'])
+        df = pd.read_csv(cov, sep='\t', names=['chr', 'position', 'coverage'])
 
         index_df = df.set_index(['chr', 'position'])
         index_df.columns = [f'{sample_name}']
@@ -64,7 +66,7 @@ def plot_per_base_from_DotCov(df):
                         data=df['coverage'])
     plt.rcParams.update({'font.size': 14})
     plt.xlim(0,800)
-    plt.ylim(0,3000)
+    plt.ylim(0,4000)
     plt.savefig('Avg_PerBaseCovHist.png')
     plt.clf()
 

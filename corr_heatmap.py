@@ -16,7 +16,7 @@ def read_df(cov_xlsx):
 
 def pwise_corr(df):
     # figure size 100 for Nextseq, 200 for Nova384, 300 for Nova768, 400 will cause memory error
-    sns.set(rc={'figure.figsize':(25,25)})
+    sns.set(rc={'figure.figsize':(100,100)})
     sns_plot = sns.heatmap(df.corr(),
                                     #  annot = True,
                                     cmap= 'coolwarm',
