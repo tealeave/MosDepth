@@ -39,13 +39,13 @@ foo(){
          mv PerTargetMeanCov.xlsx ${run}_PerTargetMeanCov.xlsx
          mv PerTargetThresholdCov.xlsx ${run}_PerTargetThresholdCov.xlsx
 
-         # Plot the in-run sample correlation heatmap
-         /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/corr_heatmap.py ${run}_PerTargetMeanCov.xlsx
-         mv correlation_heatmap.png ${run}_correlation_heatmap.png
+         # # Plot the in-run sample correlation heatmap
+         # /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/corr_heatmap.py ${run}_PerTargetMeanCov.xlsx
+         # mv correlation_heatmap.png ${run}_correlation_heatmap.png
 
-         /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/cal_quantile_plot_per_base.py
-         mv Central95FoldDiff.xlsx ${run}_Central95FoldDiff.xlsx
-         mv Avg_PerBaseCovHist.png ${run}_Avg_PerBaseCovHist.png
+         # /home/dlin/miniconda3/envs/mose/bin/python3.7 ${WORK_DIR}/cal_quantile_plot_per_base.py
+         # mv Central95FoldDiff.xlsx ${run}_Central95FoldDiff.xlsx
+         # mv Avg_PerBaseCovHist.png ${run}_Avg_PerBaseCovHist.png
 
          cp *.xlsx ${WORK_DIR}
          cp *.png ${WORK_DIR}
