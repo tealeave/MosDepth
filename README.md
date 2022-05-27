@@ -34,4 +34,16 @@ cal_quantile_plot_per_base.py:
 
 To do list:
     update high level wrapper to python script and add paremater using argparse
+
+updated script in progress:
+get_coverage_info.py:
+usage: get_coverage_info.py [-h] --bam_list BAM_LIST --bed BED [--heatmap]
+                            [--outdir OUTDIR]
+
+available arguments:
+  -h, --help           show this help message and exit
+  --bam_list BAM_LIST  [Input] list of bam fils for cov analysis
+  --bed BED            [Input] target bed file where 4th column has the $gene_exon info
+  --heatmap            [Optional] to genrate correlation heatmap
+  --outdir OUTDIR      [Optional] Path to output directory
 ```
