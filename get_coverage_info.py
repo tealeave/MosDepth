@@ -244,32 +244,32 @@ def run():
     intermediate_folder = args.outdir.joinpath("intermediate_files")
     intermediate_folder.mkdir(parents=True, exist_ok=True)
     logging.info("running mosdepth!")
-    # run_mosdepth(args.bam_list, args.bed, intermediate_folder)
+    run_mosdepth(args.bam_list, args.bed, intermediate_folder)
 
-    # logging.info("compiling per target and threshold result!")
-    # mdf, gdf, smdf = read_region(
-    #     intermediate_folder.glob("*.regions.bed.gz"),
-    #     intermediate_folder.glob("*.mosdepth.summary.txt"),
-    # )
-    # writer = pd.ExcelWriter(
-    #     args.outdir.joinpath("PerTargetMeanCov.xlsx"), engine="xlsxwriter"
-    # )
-    # mdf.to_excel(writer, sheet_name="All_Samples", index=True)
-    # gdf.to_excel(writer, sheet_name="AvgAcrossSamples", index=False)
-    # smdf.to_excel(writer, sheet_name="SampleLevel", index=False)
-    # writer.save()
+    logging.info("compiling per target and threshold result!")
+    mdf, gdf, smdf = read_region(
+        intermediate_folder.glob("*.regions.bed.gz"),
+        intermediate_folder.glob("*.mosdepth.summary.txt"),
+    )
+    writer = pd.ExcelWriter(
+        args.outdir.joinpath("PerTargetMeanCov.xlsx"), engine="xlsxwriter"
+    )
+    mdf.to_excel(writer, sheet_name="All_Samples", index=True)
+    gdf.to_excel(writer, sheet_name="AvgAcrossSamples", index=False)
+    smdf.to_excel(writer, sheet_name="SampleLevel", index=False)
+    writer.save()
 
-    # tgdf, tmsdf = read_threshold(intermediate_folder.glob("*.thresholds.bed.gz"))
-    # writer = pd.ExcelWriter(
-    #     args.outdir.joinpath("PerTargetThresholdCov.xlsx"), engine="xlsxwriter"
-    # )
-    # tgdf.to_excel(writer, sheet_name="AvgAcrossSamples", index=False)
-    # tmsdf.to_excel(writer, sheet_name="SampleLevel", index=False)
-    # writer.save()
+    tgdf, tmsdf = read_threshold(intermediate_folder.glob("*.thresholds.bed.gz"))
+    writer = pd.ExcelWriter(
+        args.outdir.joinpath("PerTargetThresholdCov.xlsx"), engine="xlsxwriter"
+    )
+    tgdf.to_excel(writer, sheet_name="AvgAcrossSamples", index=False)
+    tmsdf.to_excel(writer, sheet_name="SampleLevel", index=False)
+    writer.save()
 
-    # if args.heatmap:
-    #     mdf = mdf.reindex(sorted(mdf.columns), axis=1)
-    #     pwise_corr(args.outdir, mdf)
+    if args.heatmap:
+        mdf = mdf.reindex(sorted(mdf.columns), axis=1)
+        pwise_corr(args.outdir, mdf)
 
     
 
