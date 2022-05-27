@@ -36,8 +36,10 @@ cal_quantile_plot_per_base.py:
 
 To do list:
     update high level wrapper to python script and add paremater using argparse
+```
 
-updated script in progress:
+## updated script in progress:
+```
 get_coverage_info.py:
 usage: get_coverage_info.py [-h] --bam_list BAM_LIST --bed BED [--heatmap]
                             [--outdir OUTDIR]
