@@ -6,6 +6,8 @@ and plots correlation heatmap and per base coverage histogram
 `dependency.yml`<br />
 `https://github.com/brentp/mosdepth`
 
+## Scripts
+
 ```
 wrapper_for_mosdepth.sh: 
     The driver script that calls different script and manage jobs
